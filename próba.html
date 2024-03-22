@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formularz zapisu danych</title>
+</head>
+<body>
+
+<h1>Formularz zapisu danych</h1>
+
+<form id="myForm" action="https://script.google.com/macros/s/AKfycbxBuOk3FnKq9DBi49lKoOl7_P3O5rc2OC-Ylu2CBDvuCMASmpzr_a4g1PeGG1Rnt6rfRg/exec">
+    <label for="imie">Imię:</label><br>
+    <input type="text" id="imie" name="imie" required><br><br>
+
+    <label for="nazwisko">Nazwisko:</label><br>
+    <input type="text" id="nazwisko" name="nazwisko" required><br><br>
+
+    <input type="submit" value="Zapisz dane">
+</form>
+
+<div id="response"></div>
+
+<script>
+document.getElementById("myForm").addEventListener("submit", function(event) {
+    event.preventDefault(); // Zapobiega domyślnemu działaniu przycisku submit
+
+    var imie = document.getElementById("imie").value;
+    var nazwisko = document.getElementById("nazwisko").value;
+
+    // Wyślij dane do skryptu w Google Apps Script
+    var url = "https://script.google.com/macros/s/AKfycbxBuOk3FnKq9DBi49lKoOl7_P3O5rc2OC-Ylu2CBDvuCMASmpzr_a4g1PeGG1Rnt6rfRg/exec";
+    var formData = new FormData();
+    formData.append("imie", imie);
+    formData.append("nazwisko", nazwisko);
+
+    fetch(url, {
+        method: "POST",
+        body: formData
+    })
+    .then(response => response.text())
+    .then(data => {
+        document.getElementById("response").innerHTML = data;
+    })
+    .catch(error => {
+        console.error("Błąd:", error);
+        document.getElementById("response").innerHTML = "Wystąpił błąd podczas wysyłania danych. Spróbuj ponownie.";
+    });
+});
+</script>
+
+</body>
+</html>
